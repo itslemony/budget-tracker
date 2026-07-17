@@ -1,6 +1,13 @@
+# library imports
+import json
+from storage import save_data, load_data
+
+# variables
 budget = 0
 recent_expenses_length = 5
 recent_expenses = []
+
+budget, recent_expenses = load_data()
 
 def add_expense(amount):
     global budget
@@ -9,10 +16,12 @@ def add_expense(amount):
         return False
     budget -= amount
     return True
+    save_data(budget, recent_expenses)  # Save data after adding expense
 
 def add_income(amount):
     global budget
     budget += amount
+    save_data(budget, recent_expenses)  # Save data after adding income
 
 def get_recent_expenses():
     return recent_expenses[-recent_expenses_length:]
