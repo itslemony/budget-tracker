@@ -11,12 +11,13 @@ budget, recent_expenses = load_data()
 
 def add_expense(amount):
     global budget
+
     if amount > budget:
         print("Insufficient budget to add this expense.")
         return False
+
     budget -= amount
     return True
-    save_data(budget, recent_expenses)  # Save data after adding expense
 
 def add_income(amount):
     global budget
@@ -24,7 +25,23 @@ def add_income(amount):
     save_data(budget, recent_expenses)  # Save data after adding income
 
 def get_recent_expenses():
-    return recent_expenses[-recent_expenses_length:]
+    if not recent_expenses:
+        print("No recent expenses to display.")
+        return
+    for expense in recent_expenses[-recent_expenses_length:]:
+        for category, amount in expense.items():
+            print(f"Category: {category}, Amount: ${amount}")
+
+    choice = input("Clear recent expenses? (y/n): ")
+    if choice == 'y':
+        recent_expenses.clear()
+        save_data(budget, recent_expenses)
+    elif choice == 'n':
+        return
+    else:
+        print("Invalid choice. Please enter 'y' or 'n'.")
+        get_recent_expenses()  # Call the function again for valid input
+        
 
 def display_menu():
     print("==== Budget Tracker ====")
@@ -33,6 +50,7 @@ def display_menu():
     print("2. Add Income")
     print("3. View Expenses")
     print("4. Exit")
+    
 
     return input("Choice: ")
 
@@ -47,6 +65,7 @@ def track_expense():
     print(f"Expense of ${amount} added to category: {category}")
     add_expense(int(amount))
     recent_expenses.append({category: int(amount)})
+    save_data(budget, recent_expenses)  # Save data after adding expense
 
 def main():
     while True:
@@ -61,8 +80,7 @@ def main():
             add_income(int(amount))
             print("Income added. New budget: $", budget)
         elif choice == '3':
-            expenses = get_recent_expenses()
-            print("Recent Expenses: ", expenses)
+            get_recent_expenses()
         elif choice == '4':
             print("Exiting Budget Tracker.")
             break
