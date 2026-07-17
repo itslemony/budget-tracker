@@ -8,10 +8,10 @@ Simple command-line budget tracker written via Python.
 - Track expenses
 - View recent expenses
 - Prevent overspending
+- Save data using JSON
 
 ## Future Goals
 
-- [] Save data to JSON
 - [] Spending by category
 - [] Monthly summaries
 - [] Desktop program
